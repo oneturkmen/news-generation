@@ -5,8 +5,10 @@ Date: April 28, 2018
 """
 
 import re
+import sys
 import numpy as np
 import pandas as pd
+import os
 
 
 def cleanData(data_raw):
@@ -33,15 +35,29 @@ def cleanData(data_raw):
 
 
 def main():
+    # Read args: <input.csv> <output.csv>
+    if len(sys.argv) != 3:
+        sys.exit("Lacking or too many arguments! Expected only 2: <input> <output>.")
+
+    # Check if the input file exists
+    inputFile = sys.argv[1]
+    outputFile = sys.argv[2]
+    if not os.path.exists(inputFile):
+        sys.exit("{0} does not exist!!!".format(inputFile))
+
+    if os.path.exists(outputFile):
+        print("{0} will be overwritten!".format(outputFile))
+
+
     # Load data 
-    data = pd.read_csv('articles1.csv', header=None, na_values=['.'], encoding='latin-1')
+    data = pd.read_csv(inputFile, header=None, na_values=['.'], encoding='latin-1')
     data_np = np.array(data)
     
     # Clean data
     data_cleaned = cleanData(data_np)
     
     # Save cleaned tweets
-    pd.DataFrame(data_cleaned).to_csv('news_cleaned.csv', index=False, header=False)
+    pd.DataFrame(data_cleaned).to_csv(outputFile, index=False, header=False)
     
     
 

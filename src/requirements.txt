@@ -1,0 +1,7 @@
+# Not maintained, for read-only purposes.
+# You should choose the correct version. The newer APIs (esp. major) may not be compatible anymore.
+
+keras
+tensorflow==2.2.0
+numpy
+pandas

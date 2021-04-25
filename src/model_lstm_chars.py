@@ -15,8 +15,19 @@ from keras.layers import LSTM
 from keras.callbacks import ModelCheckpoint
 from keras.utils import np_utils
 
+import sys
+import os
+
+# Load args
+if len(sys.argv) != 2:
+    sys.exit("You should only pass 1 arg, which is a csv file")
+if not sys.argv[1].endswith('.csv'):
+    sys.exit("Hmm are you sure you passed a csv file?")
+if not os.path.exists(sys.argv[1]):
+    sys.exit("Hmm the csv file does not exist, does it?")
+
 # Load the news articles
-raw_text = pd.read_csv('news_cleaned.csv', header=None, na_values=['.'], encoding='latin-1')
+raw_text = pd.read_csv(sys.argv[1], header=None, na_values=['.'], encoding='latin-1')
 raw_text = np.array(raw_text)
 raw_text = raw_text.flatten()
 

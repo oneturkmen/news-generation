@@ -13,6 +13,8 @@ n-gram represents the state.
 import numpy as np
 import pandas as pd
 
+import sys
+import os
 
 # Markov chain class
 class MarkovChain(object):
@@ -104,8 +106,16 @@ class MarkovChain(object):
     
 
 def main():
+    # Load the csv file
+    if len(sys.argv) != 2:
+        sys.exit("You should only pass 1 arg, which is a csv file")
+    if not sys.argv[1].endswith('.csv'):
+        sys.exit("Hmm are you sure you passed a csv file?")
+    if not os.path.exists(sys.argv[1]):
+        sys.exit("Hmm the csv file does not exist, does it?")
+
     # Load data and convert it to numpy array
-    data = pd.read_csv('news_cleaned.csv', header=None, na_values=['.'], encoding='latin-1')
+    data = pd.read_csv(sys.argv[1], header=None, na_values=['.'], encoding='latin-1')
     data = np.array(data)
     
     # Flatten it so we got array of strings
@@ -122,3 +132,6 @@ def main():
     markov = MarkovChain(data, n_grams, text_size)
     output = markov.generateText()
     print(output)
+
+# Ignite the machine
+main()
